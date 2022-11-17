@@ -4,6 +4,7 @@ import entity.DataPool;
 import entity.Task;
 import entity.TaskGraph;
 import service.io.Input;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class FileInputImpl implements Input {
                 String[] edge = line.split(" ");
                 int ver1 = Integer.parseInt(edge[0]);
                 int ver2 = Integer.parseInt(edge[1]);
-                DataPool.tasks[ver1].getSuccessor().add(ver2);
+                DataPool.tasks[ver1].getSuccessors().add(ver2);
                 DataPool.tasks[ver2].getPredecessor().add(ver1);
                 DataPool.graph.addEdge(ver1, ver2);
             }
