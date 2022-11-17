@@ -2,16 +2,24 @@ package controller.impl;
 
 import utils.ConfigUtils;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public abstract class AbstractPopulationController {
-    private int size;
-    private double mutation;
+    private final int size;
+    private final int generation;
+    private final double mutation;
 
-    public void initiatePopulation(){
-        size= Integer.parseInt(ConfigUtils.get("evolution.population.size"));
-
+    public AbstractPopulationController(){
+        size = Integer.parseInt(ConfigUtils.get("evolution.population.size"));
+        generation = Integer.parseInt(ConfigUtils.get("evolution.population.generation"));
+        mutation = Double.parseDouble(ConfigUtils.get("evolution.population.mutation"));
     }
+
+
+    public abstract void initiatePopulation();
+
+
 
 
 
