@@ -1,8 +1,18 @@
 package controller;
 
+import entity.Chromosome;
+
+import java.util.List;
+
 public interface PopulationController {
     void initialPopulation();
 
-    void reproduce();
+    void produceOffspring();
+
+    void sorting();
+
+    void eliminate();
+
+    List<Chromosome> iterate();
 
 }
