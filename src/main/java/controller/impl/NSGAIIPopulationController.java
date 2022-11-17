@@ -2,6 +2,7 @@ package controller.impl;
 
 import entity.Chromosome;
 import entity.DataPool;
+import entity.Type;
 import utils.DataUtils;
 
 import java.util.Random;
@@ -10,6 +11,7 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
     public static Random random = new Random();
     public static int insNumber = 0;
     public static int typeNumber = 0;
+    public static Type[] types = new Type[typeNumber];
     @Override
     public void doInitial() {
         int size = getSize();
