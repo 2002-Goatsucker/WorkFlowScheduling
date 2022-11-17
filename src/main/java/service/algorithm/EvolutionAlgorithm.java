@@ -5,7 +5,7 @@ import entity.Chromosome;
 import java.util.List;
 
 public interface EvolutionAlgorithm {
-    public Chromosome mutate();
-    public List<Chromosome> crossover();
+    public abstract Chromosome mutate(Chromosome c);
+    public abstract List<Chromosome> crossover(Chromosome a, Chromosome b);
 
 }
