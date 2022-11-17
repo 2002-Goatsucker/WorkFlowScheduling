@@ -22,16 +22,16 @@ public class NSGAII implements EvolutionAlgorithm {
             double rate = Double.parseDouble(ConfigUtils.get("evolution.population.mutation"));
             double r1 = random.nextDouble(0, 1);
             double r2 = random.nextDouble(0, 1);
-            double r3 = random.nextDouble(0, 1);
+//            double r3 = random.nextDouble(0, 1);
             if (r1 < rate){
                 mutateOrder(chromosome);
             }
             if (r2 < rate){
                 mutateIns(chromosome);
             }
-            if (r3 < rate){
-                mutateType(chromosome);
-            }
+//            if (r3 < rate){
+//                mutateType(chromosome);
+//            }
 
 
 
