@@ -70,7 +70,6 @@ public class NSGAII implements EvolutionAlgorithm {
             }
         }
         nc.getTask()[posN] = temp;
-
     }
 
     public static void mutateIns(Chromosome X) {
@@ -180,6 +179,7 @@ public class NSGAII implements EvolutionAlgorithm {
             TypeA = random.nextInt(typeNumber);
         }
     }
+
 
 
 }
