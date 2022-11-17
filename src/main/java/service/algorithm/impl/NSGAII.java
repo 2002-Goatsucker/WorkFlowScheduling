@@ -10,7 +10,7 @@ public class NSGAII implements EvolutionAlgorithm {
     public static Random random = new Random();
     public static int typeNumber;
     @Override
-    public Chromosome mutate(Chromosome c, double mutate_rate) {
+    public Chromosome mutate(Chromosome c) {
 
     }
 
