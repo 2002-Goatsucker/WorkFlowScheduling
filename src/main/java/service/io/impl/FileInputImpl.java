@@ -29,8 +29,8 @@ public class FileInputImpl implements Input {
                 String[] edge = line.split(" ");
                 int ver1 = Integer.parseInt(edge[0]);
                 int ver2 = Integer.parseInt(edge[1]);
-                DataPool.tasks[ver1].successor.add(ver2);
-                DataPool.tasks[ver2].predecessor.add(ver1);
+                DataPool.tasks[ver1].getSuccessor().add(ver2);
+                DataPool.tasks[ver2].getPredecessor().add(ver1);
                 DataPool.graph.addEdge(ver1, ver2);
             }
             System.out.println("Input success!");

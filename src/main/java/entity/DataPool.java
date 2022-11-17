@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class DataPool {
-    private static Task[] tasks;
-    private static TaskGraph graph;
+    public static Task[] tasks;
+    public static TaskGraph graph;
 }
