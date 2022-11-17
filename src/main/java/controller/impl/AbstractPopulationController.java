@@ -16,6 +16,15 @@ public abstract class AbstractPopulationController implements PopulationControll
     private final List<Chromosome> fa;
     private final List<Chromosome> son;
 
+    private List<List<Chromosome>> rank;
+
+    public List<List<Chromosome>> getRank() {
+        return rank;
+    }
+
+    public void setRank(List<List<Chromosome>> rank) {
+        this.rank = rank;
+    }
 
     public AbstractPopulationController(){
         size = Integer.parseInt(ConfigUtils.get("evolution.population.size"));
@@ -31,17 +40,17 @@ public abstract class AbstractPopulationController implements PopulationControll
     }
     @Override
     public void produceOffspring() {
-
+        doProduce();
     }
 
     @Override
     public void sorting() {
-
+        doSort();
     }
 
     @Override
     public void eliminate() {
-
+        doEliminate();
     }
 
     @Override
@@ -52,6 +61,7 @@ public abstract class AbstractPopulationController implements PopulationControll
             doProduce();
             doSort();
             doEliminate();
+            son.clear();
         }
         return fa;
     }

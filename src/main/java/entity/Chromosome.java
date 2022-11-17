@@ -1,5 +1,8 @@
 package entity;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Chromosome implements Cloneable {
     private int[] task;
     private int[] task2ins;
@@ -7,6 +10,48 @@ public class Chromosome implements Cloneable {
     private double cost;
     private double makeSpan;
 
+    private final List<Chromosome> better=new LinkedList<>();
+    private final List<Chromosome> poor=new LinkedList<>();
+
+    private int betterNum;
+    private int poorNum;
+
+    public void setBetterNum(int betterNum) {
+        this.betterNum = betterNum;
+    }
+
+    public void setPoorNum(int poorNum) {
+        this.poorNum = poorNum;
+    }
+
+    public int getBetterNum() {
+        return betterNum;
+    }
+
+    public int getPoorNum() {
+        return poorNum;
+    }
+
+    public void addBetter(){
+        betterNum++;
+    }
+    public void addPoor(){
+        poorNum++;
+    }
+    public void reduceBetter(){
+        betterNum--;
+    }
+    public void reducePoor(){
+        poorNum--;
+    }
+
+    public List<Chromosome> getBetter() {
+        return better;
+    }
+
+    public List<Chromosome> getPoor() {
+        return poor;
+    }
 
     public int[] getTask() {
         return task;
