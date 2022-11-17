@@ -178,6 +178,19 @@ public class NSGAII implements EvolutionAlgorithm {
         }
     }
 
-
+    public static int[] getRandomInstance(int size) {
+        int[] instances = new int[size];
+        for (int i = 0; i < size; i++) {
+            instances[i] = random.nextInt(DataPool.insNum);
+        }
+        return instances;
+    }
+    public static int[] getRandomType(int size) {
+        int[] types = new int[size];
+        for (int i = 0; i < size; i++) {
+            types[i] = random.nextInt(DataPool.typeNum);
+        }
+        return types;
+    }
 
 }
