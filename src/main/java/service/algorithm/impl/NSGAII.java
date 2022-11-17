@@ -12,8 +12,6 @@ import java.util.Random;
 
 public class NSGAII implements EvolutionAlgorithm {
     public static Random random = new Random();
-    public static int typeNumber;
-    public static int insNumber;
     @Override
     public Chromosome mutate(Chromosome c) {
         Chromosome chromosome = null;
@@ -75,14 +73,14 @@ public class NSGAII implements EvolutionAlgorithm {
     public static void mutateIns(Chromosome X) {
         int number = X.getTask2ins().length;
         int p = random.nextInt(number);//generate the position where mutate occurs
-        int instance = random.nextInt(insNumber);//m is the number of instances available
+        int instance = random.nextInt(DataPool.insNum);//m is the number of instances available
         X.getTask2ins()[p] = instance;
     }
 
     public static void mutateType(Chromosome X) {
         int number = X.getIns2type().length;
         int p = random.nextInt(number);//generate the position where mutate occurs
-        int instance = random.nextInt(insNumber);//m is the number of instances available
+        int instance = random.nextInt(DataPool.insNum);//m is the number of instances available
         X.getIns2type()[p] = instance;
     }
 
@@ -176,7 +174,7 @@ public class NSGAII implements EvolutionAlgorithm {
         //mutate Pa with a small probability
         int r = random.nextInt(1000);
         if (r == 1) {
-            TypeA = random.nextInt(typeNumber);
+            TypeA = random.nextInt(DataPool.typeNum);
         }
     }
 

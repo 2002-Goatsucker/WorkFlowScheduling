@@ -49,7 +49,7 @@ public class Chromosome implements Cloneable {
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
+    public Chromosome clone() throws CloneNotSupportedException {
         super.clone();
         Chromosome chromosome = new Chromosome();
         chromosome.task = new int[task.length];

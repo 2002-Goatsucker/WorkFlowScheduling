@@ -2,37 +2,51 @@ package controller.impl;
 
 import entity.Chromosome;
 import entity.DataPool;
-import entity.Type;
+import service.algorithm.impl.NSGAII;
 import utils.DataUtils;
 
 import java.util.Random;
 
-public class NSGAIIPopulationController extends AbstractPopulationController {
-    public static Random random = new Random();
-    public static int insNumber = 0;
-    public static int typeNumber = 0;
-    public static Type[] types = new Type[typeNumber];
+public class NSGAIIPopulationController extends AbstractPopulationController{
+    private final NSGAII nsgaii=new NSGAII();
     @Override
     public void doInitial() {
-        int size = getSize();
-
-        int[] taskOrder = DataPool.graph.TopologicalSorting();
-        int n = taskOrder.length;
-        int insNumber = n;
-        int typeNumber = 8;
+        int size=getSize();
+        int[] taskOrder= DataPool.graph.TopologicalSorting();
         Chromosome chromosome = new Chromosome();
         chromosome.setTask(taskOrder);
-        chromosome.setTask2ins(getRandomInstance(n));
-        chromosome.setIns2type(getRandomType(n));
+        chromosome.setTask2ins(null);
+        chromosome.setIns2type(null);
         chromosome.setCost(DataUtils.getCost(chromosome));
         chromosome.setMakeSpan(DataUtils.getMakeSpan(chromosome));
-
-
+        for(int i=0;i<size;++i) {
+            getFa().add(chromosome);
+            NSGAII.mutateOrder(chromosome);
+            chromosome.setTask2ins(null);
+            chromosome.setIns2type(null);
+            chromosome.setCost(DataUtils.getCost(chromosome));
+            chromosome.setMakeSpan(DataUtils.getMakeSpan(chromosome));
+        }
     }
 
     @Override
     public void doProduce() {
-
+        try {
+            Random random=new Random();
+            for(int i=0;i<getSize();++i){
+                int num1=random.nextInt(getSize());
+                int num2=random.nextInt(getSize());
+                while (num1==num2){
+                    num2=random.nextInt(getSize());
+                }
+                Chromosome child1=getFa().get(num1);
+                Chromosome child2= getFa().get(num2);
+                Chromosome child=DataUtils.getBetter(child1,child2);
+                getSon().add(child);
+            }
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -43,20 +57,5 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
     @Override
     public void doEliminate() {
 
-    }
-
-    public static int[] getRandomInstance(int size) {
-        int[] instances = new int[size];
-        for (int i = 0; i < size; i++) {
-            instances[i] = random.nextInt(insNumber);
-        }
-        return instances;
-    }
-    public static int[] getRandomType(int size) {
-        int[] types = new int[size];
-        for (int i = 0; i < size; i++) {
-            types[i] = random.nextInt(insNumber);
-        }
-        return types;
     }
 }
