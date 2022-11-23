@@ -31,8 +31,6 @@ public class ConsoleInputImpl implements Input {
             else {
                 int ver1=Integer.parseInt(input.next());
                 int ver2=Integer.parseInt(input.next());
-                DataPool.tasks[ver1].getSuccessor().add(ver2);
-                DataPool.tasks[ver2].getPredecessor().add(ver1);
                 DataPool.graph.addEdge(ver1,ver2);
             }
         }

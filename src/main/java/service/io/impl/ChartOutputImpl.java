@@ -30,8 +30,8 @@ public class ChartOutputImpl implements Output {
 
         JFreeChart freeChart = ChartFactory.createScatterPlot(
                 "Pareto Set Diagram",// 图表标题
-                "cost",//y轴方向数据标签
-                "makespan",//x轴方向数据标签
+                "makespan",
+                "cost",
                 collection,//数据集，即要显示在图表上的数据
                 PlotOrientation.VERTICAL,//设置方向
                 true,//是否显示图例

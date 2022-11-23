@@ -83,10 +83,12 @@ public class HEFT {
                 }
             }
 
-        return null;
-        }
-        Chromosome chromosome = new Chromosome(order, task2ins, ins2type);
 
-        return chromosome;
+        }
+        c.setTask(order);
+        c.setTask2ins(task2ins);
+        c.setIns2type(ins2type);
+
+        return c;
     }
 }

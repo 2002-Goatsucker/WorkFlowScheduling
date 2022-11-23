@@ -7,7 +7,7 @@ import entity.Task;
 import entity.Type;
 
 public class MakeSpanUtils {
-    public static Type[] types;
+    public static Type[] task2types;
 
     public static double getCompTime(double referTime,double cu){
         return referTime/cu;
@@ -17,10 +17,10 @@ public class MakeSpanUtils {
         return dataSize/brandWidth;
     }
 
-    public static double getStartTime(double availableTime, int task, double dataSize, double brandWidth){
+    public static double getStartTime(double availableTime, Task task, double dataSize, double brandWidth){
         double max = 0;
-        for(int temp: DataPool.tasks[task].getPredecessor()){
-            double bw = Math.min(brandWidth,types[temp].bw);
+        for(int temp: task.getPredecessor()){
+            double bw = Math.min(brandWidth,task2types[temp].bw);
             double commTime = getCommTime(dataSize,bw);
             max = Math.max(max,commTime+DataPool.tasks[temp].getFinalTime());
         }

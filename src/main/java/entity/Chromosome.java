@@ -11,19 +11,25 @@ public class Chromosome implements Cloneable {
     private double cost;
     private double makeSpan;
 
-    private final List<Chromosome> better=new LinkedList<>();
-    private final List<Chromosome> poor=new LinkedList<>();
+    private int[] start;
+    private int[] end;
+
+    private final List<Chromosome> better = new LinkedList<>();
+    private final List<Chromosome> poor = new LinkedList<>();
 
     private int betterNum;
     private int poorNum;
 
-    public Chromosome(){
+    public Chromosome() {
 
     }
+
     public Chromosome(int[] order, int[] task2ins, int[] ins2type) {
         this.setTask(order);
         this.setTask2ins(task2ins);
         this.setIns2type(ins2type);
+        start=new int[order.length];
+        end=new int[order.length];
     }
 
     public void setBetterNum(int betterNum) {
@@ -42,16 +48,19 @@ public class Chromosome implements Cloneable {
         return poorNum;
     }
 
-    public void addBetter(){
+    public void addBetter() {
         betterNum++;
     }
-    public void addPoor(){
+
+    public void addPoor() {
         poorNum++;
     }
-    public void reduceBetter(){
+
+    public void reduceBetter() {
         betterNum--;
     }
-    public void reducePoor(){
+
+    public void reducePoor() {
         poorNum--;
     }
 
@@ -110,33 +119,43 @@ public class Chromosome implements Cloneable {
         chromosome.task = new int[task.length];
         chromosome.task2ins = new int[task2ins.length];
         chromosome.ins2type = new int[ins2type.length];
+        chromosome.start=new int[start.length];
+        chromosome.end=new int[end.length];
         chromosome.cost = cost;
         chromosome.makeSpan = makeSpan;
         System.arraycopy(task, 0, chromosome.task, 0, task.length);
         System.arraycopy(task2ins, 0, chromosome.task2ins, 0, task2ins.length);
         System.arraycopy(ins2type, 0, chromosome.ins2type, 0, ins2type.length);
+        System.arraycopy(start, 0, chromosome.start, 0, start.length);
+        System.arraycopy(end, 0, chromosome.end, 0, end.length);
+
         return chromosome;
     }
-    public void print(){
+
+    public void print() {
         System.out.println("Order:           " + this.getTask());
         System.out.println("Task to Instance:" + this.getTask2ins());
         System.out.println("Instance to type:" + this.getIns2type());
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         Chromosome chromosome = (Chromosome) obj;
 //        for(int i=0;i<task.length;++i){
 //            if(chromosome.getTask()[i]!=task[i]) return false;
 //            if(chromosome.getTask2ins()[i]!=getTask2ins()[i]) return false;
 //            if(chromosome.getIns2type()[i]!=getIns2type()[i]) return false;
 //        }
-
-        return Math.abs(chromosome.makeSpan - makeSpan) < 0.0001 && Math.abs(chromosome.cost - cost) < 0.0001;
+        for (int i = 0; i < chromosome.getTask().length; ++i) {
+            if (chromosome.getTask()[i] != getTask()[i] || chromosome.getIns2type()[i] != getIns2type()[i] || chromosome.getTask2ins()[i] == getTask2ins()[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return (int) (cost+makeSpan);
+        return (int) (cost + makeSpan);
     }
 }

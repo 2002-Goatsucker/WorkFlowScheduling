@@ -47,7 +47,7 @@ public class NSGAII implements EvolutionAlgorithm {
             e.printStackTrace();
         }
         int n = nc.getTask().length;
-        Task task = DataPool.tasks[nc.getTask()[pos]];
+        Task task = DataPool.tasks[nc.getTask()[pos]].clone();
         int start = pos;
         int end = pos;
         while (start >= 0 && !task.getPredecessor().contains(DataPool.tasks[nc.getTask()[start]].getIndex())) {
@@ -122,6 +122,9 @@ public class NSGAII implements EvolutionAlgorithm {
         //这里我产生了一个问题，会不会在Chromosome里面把int[]改成List会更好
         for (int num : A.getTask()) {
             if (!isContains(orderA, 0, p, num)) {
+                if(cursorA==100){
+                    System.out.println();
+                }
                 orderA[cursorA] = num;
                 cursorA++;
             }

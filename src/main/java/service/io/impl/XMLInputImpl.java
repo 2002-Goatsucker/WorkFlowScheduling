@@ -35,6 +35,15 @@ public class XMLInputImpl implements Input {
                         int ver1= Integer.parseInt(parent.attributeValue("ref").substring(2));
                         DataPool.graph.addEdge(ver1,ver2);
                     }
+                }else if(child.getName().equals("job")){
+                    int id=Integer.parseInt(child.attributeValue("id").substring(2));
+                    double referTime=Double.parseDouble(child.attributeValue("runtime"));
+                    int totalSize=0;
+                    for(Element element:child.elements()){
+                        totalSize+=Integer.parseInt(element.attributeValue("size"));
+                    }
+                    DataPool.tasks[id].setDataSize(totalSize);
+                    DataPool.tasks[id].setReferTime(referTime);
                 }
             }
 

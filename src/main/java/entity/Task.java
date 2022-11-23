@@ -1,10 +1,11 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Task {
+public class Task implements Cloneable{
     private int index;
     private double dataSize;
     private double referTime;
@@ -76,5 +77,15 @@ public class Task {
 
     public List<Integer> getSuccessors() {
         return successor;
+    }
+
+    @Override
+    public Task clone() {
+        Task task=new Task(index);
+        task.setDataSize(dataSize);
+        task.setReferTime(referTime);
+        task.setSuccessor(successor);
+        task.setPredecessor(predecessor);
+        return task;
     }
 }

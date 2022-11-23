@@ -2,6 +2,7 @@ package controller.impl;
 
 import entity.Chromosome;
 import entity.DataPool;
+import service.algorithm.HEFT;
 import service.algorithm.impl.NSGAII;
 import utils.DataUtils;
 
@@ -15,21 +16,13 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
     @Override
     public void doInitial() throws CloneNotSupportedException {
         int size = getSize();
-        int[] taskOrder = DataPool.graph.TopologicalSorting();
-        Chromosome chromosome = new Chromosome();
-        chromosome.setTask(taskOrder);
-        chromosome.setTask2ins(NSGAII.getRandomInstance(taskOrder.length));
-        chromosome.setIns2type(NSGAII.getRandomType(taskOrder.length));
-        chromosome.setCost(DataUtils.getCost(chromosome));
-        chromosome.setMakeSpan(DataUtils.getMakeSpan(chromosome));
+//        Chromosome heft=HEFT.generateChromosome();
+//        heft.setCost(DataUtils.getCost(heft));
+//        heft.setMakeSpan(DataUtils.getMakeSpan(heft));
+//        getFa().add(heft);
         while (getFa().size() < getSize()) {
-            if (!getFa().contains(chromosome)) getFa().add(chromosome);
-            NSGAII.mutateOrder(chromosome);
-            chromosome.setTask2ins(NSGAII.getRandomInstance(taskOrder.length));
-            chromosome.setIns2type(NSGAII.getRandomType(taskOrder.length));
-            chromosome.setCost(DataUtils.getCost(chromosome));
-            chromosome.setMakeSpan(DataUtils.getMakeSpan(chromosome));
-            chromosome = chromosome.clone();
+            Chromosome chromosome=DataUtils.getRandomChromosome();
+            if(!getFa().contains(chromosome)) getFa().add(chromosome);
         }
     }
 
@@ -37,7 +30,7 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
     public void doProduce() {
         try {
             Random random = new Random();
-            for (int i = 0; i < getFa().size(); ++i) {
+            while (getSon().size()<getFa().size()) {
                 int num1 = random.nextInt(getSize());
                 int num2 = random.nextInt(getSize());
                 while (num1 == num2) {
@@ -46,8 +39,7 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
                 Chromosome child1 = getFa().get(num1);
                 Chromosome child2 = getFa().get(num2);
                 Chromosome child = DataUtils.getBetter(child1, child2);
-
-                getSon().add(child);
+                if(!getSon().contains(child)&&!getFa().contains(child)) getSon().add(child);
             }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);

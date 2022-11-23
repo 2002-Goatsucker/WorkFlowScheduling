@@ -3,9 +3,11 @@ package controller.impl;
 import controller.PopulationController;
 import entity.Chromosome;
 import entity.DataPool;
+import service.algorithm.impl.NSGAII;
 import utils.ConfigUtils;
 import utils.DataUtils;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -66,6 +68,11 @@ public abstract class AbstractPopulationController implements PopulationControll
         Random random = new Random();
         try {
             doInitial();
+            if(generation==0) {
+                List<List<Chromosome>> list=new ArrayList<>();
+                list.add(fa);
+                return list;
+            }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
@@ -85,9 +92,8 @@ public abstract class AbstractPopulationController implements PopulationControll
             List<Chromosome> temp = fa.stream().distinct().toList();
             temp = new LinkedList<>(temp);
             while (temp.size() < getSize()) {
-                Chromosome chromosome = temp.get(random.nextInt(temp.size()));
-                chromosome = DataPool.nsgaii.mutate(chromosome);
-                temp.add(chromosome);
+                Chromosome chromosome = DataUtils.getRandomChromosome();
+                if(!temp.contains(chromosome)) getFa().add(chromosome);
             }
             fa = temp;
         }
