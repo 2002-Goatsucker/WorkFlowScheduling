@@ -1,12 +1,33 @@
 package utils;
 import entity.*;
 import service.algorithm.impl.NSGAII;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 public class DataUtils {
     private static final Random random=new Random();
     public static double getMakeSpan(Chromosome chromosome) {
-
-
+        double[] availableTime = new double[DataPool.insNum];
+        double exitTime = 0;
+        for (int taskIndex : chromosome.getTask()){
+            Task task = DataPool.tasks[taskIndex].clone();
+            int insIndex = chromosome.getTask2ins()[taskIndex];
+            int typeIndex = chromosome.getIns2type()[insIndex];
+            if (task.getPredecessor().size() == 0) {
+                chromosome.getStart()[taskIndex] = Math.max(0, availableTime[insIndex]);
+                chromosome.getEnd()[taskIndex] = chromosome.getStart()[taskIndex] + task.getReferTime() / DataPool.types[typeIndex].cu;
+                availableTime[insIndex] = chromosome.getEnd()[taskIndex];
+            } else {
+                chromosome.getStart()[taskIndex] = Math.max(getStartTime(chromosome, taskIndex), availableTime[insIndex]);
+                chromosome.getEnd()[taskIndex] = chromosome.getStart()[taskIndex] + DataPool.tasks[taskIndex].getReferTime() / DataPool.types[typeIndex].cu;
+                availableTime[insIndex] = task.getFinalTime();
+            }
+            if (task.getSuccessor().size() == 0) {
+                exitTime = Math.max(exitTime, task.getFinalTime());
+            }
+        }
+        return exitTime;
 
 
 
@@ -90,4 +111,27 @@ public class DataUtils {
         return graph.TopologicalSorting();
     }
 
+    public static double getStartTime(Chromosome chromosome, int taskIndex){
+        List<Integer> preTaskIndexes = DataPool.tasks[taskIndex].getPredecessor();
+        int n = preTaskIndexes.size();
+        int instanceIndex = chromosome.getTask2ins()[taskIndex];
+        int typeIndex = chromosome.getIns2type()[instanceIndex];
+        double[] communicationTime = new double[n];
+        double[] after_communicationTime = new double[n];
+        for (int i = 0; i < n; i++) {
+            int preTaskIndex = preTaskIndexes.get(i);
+            int preInstanceIndex = chromosome.getTask2ins()[preTaskIndex];
+            int preTypeIndex = chromosome.getIns2type()[preInstanceIndex];
+            double bw_min = Math.min(DataPool.types[typeIndex].bw, DataPool.types[preTypeIndex].bw);
+            communicationTime[i] = DataPool.tasks[preTaskIndex].getDataSize() / bw_min;
+            after_communicationTime[i] = chromosome.getEnd()[preTaskIndex] + communicationTime[i];
+        }
+        double max_after_communication_time = 0;
+        for(double time : after_communicationTime){
+            if(time > max_after_communication_time){
+                max_after_communication_time = time;
+            }
+        }
+        return max_after_communication_time;
+    }
 }

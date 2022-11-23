@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -11,8 +12,8 @@ public class Chromosome implements Cloneable {
     private double cost;
     private double makeSpan;
 
-    private int[] start;
-    private int[] end;
+    private double[] start;
+    private double[] end;
 
     private final List<Chromosome> better = new LinkedList<>();
     private final List<Chromosome> poor = new LinkedList<>();
@@ -28,8 +29,24 @@ public class Chromosome implements Cloneable {
         this.setTask(order);
         this.setTask2ins(task2ins);
         this.setIns2type(ins2type);
-        start=new int[order.length];
-        end=new int[order.length];
+        this.start=new double[order.length];
+        this.end=new double[order.length];
+    }
+
+    public double[] getStart() {
+        return start;
+    }
+
+    public void setStart(double[] start) {
+        this.start = start;
+    }
+
+    public double[] getEnd() {
+        return end;
+    }
+
+    public void setEnd(double[] end) {
+        this.end = end;
     }
 
     public void setBetterNum(int betterNum) {
@@ -119,8 +136,8 @@ public class Chromosome implements Cloneable {
         chromosome.task = new int[task.length];
         chromosome.task2ins = new int[task2ins.length];
         chromosome.ins2type = new int[ins2type.length];
-        chromosome.start=new int[start.length];
-        chromosome.end=new int[end.length];
+        chromosome.start=new double[start.length];
+        chromosome.end=new double[end.length];
         chromosome.cost = cost;
         chromosome.makeSpan = makeSpan;
         System.arraycopy(task, 0, chromosome.task, 0, task.length);
@@ -133,9 +150,9 @@ public class Chromosome implements Cloneable {
     }
 
     public void print() {
-        System.out.println("Order:           " + this.getTask());
-        System.out.println("Task to Instance:" + this.getTask2ins());
-        System.out.println("Instance to type:" + this.getIns2type());
+        System.out.println("Order:           " + Arrays.toString(this.getTask()));
+        System.out.println("Task to Instance:" + Arrays.toString(this.getTask2ins()));
+        System.out.println("Instance to type:" + Arrays.toString(this.getIns2type()));
     }
 
     @Override

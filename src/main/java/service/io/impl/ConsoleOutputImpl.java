@@ -15,6 +15,7 @@ public class ConsoleOutputImpl implements Output {
             for (Chromosome chromosome:list1){
                 System.out.println("MakeSpan: "+chromosome.getMakeSpan()+" & "+"Cost: "+chromosome.getCost());
             }
+            k++;
         }
 
 
