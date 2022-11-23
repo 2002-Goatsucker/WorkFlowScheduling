@@ -1,9 +1,17 @@
 import controller.PopulationController;
 import controller.impl.NSGAIIPopulationController;
+import entity.Chromosome;
 import entity.DataPool;
+import entity.Task;
 import entity.Type;
 import service.io.Input;
+import service.io.Output;
+import service.io.impl.ChartOutputImpl;
 import service.io.impl.ConsoleInputImpl;
+import service.io.impl.ConsoleOutputImpl;
+import service.io.impl.XMLInputImpl;
+
+import java.util.List;
 
 public class Application {
     public static void main(String[] args) {
@@ -18,9 +26,18 @@ public class Application {
         types[7] = new Type(7, 30f, 131072000, 0.9f);
         DataPool.typeNum = 8;
         DataPool.types = types;
-        Input input=new ConsoleInputImpl();
+        Input input=new XMLInputImpl();
+        input.input();
+
+        for (int i = 0; i < DataPool.tasks.length; i++) {
+            DataPool.tasks[i] = new Task(i);
+            DataPool.tasks[i].setDataSize(3.43);
+            DataPool.tasks[i].setReferTime(8.44);
+        }
         PopulationController controller=new NSGAIIPopulationController();
-        controller.iterate();
+        List<List<Chromosome>> list = controller.iterate();
+        Output output=new ChartOutputImpl();
+        output.output(list);
 
     }
 }

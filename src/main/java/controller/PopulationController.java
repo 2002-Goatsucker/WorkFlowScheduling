@@ -13,6 +13,6 @@ public interface PopulationController {
 
     void eliminate();
 
-    List<Chromosome> iterate();
+    List<List<Chromosome>> iterate();
 
 }

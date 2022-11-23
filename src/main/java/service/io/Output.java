@@ -5,5 +5,5 @@ import entity.Chromosome;
 import java.util.List;
 
 public interface Output {
-    void output(List<Chromosome> list);
+    void output(List<List<Chromosome>> list);
 }

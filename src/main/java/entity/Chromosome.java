@@ -2,6 +2,7 @@ package entity;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Chromosome implements Cloneable {
     private int[] task;
@@ -120,5 +121,22 @@ public class Chromosome implements Cloneable {
         System.out.println("Order:           " + this.getTask());
         System.out.println("Task to Instance:" + this.getTask2ins());
         System.out.println("Instance to type:" + this.getIns2type());
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        Chromosome chromosome = (Chromosome) obj;
+//        for(int i=0;i<task.length;++i){
+//            if(chromosome.getTask()[i]!=task[i]) return false;
+//            if(chromosome.getTask2ins()[i]!=getTask2ins()[i]) return false;
+//            if(chromosome.getIns2type()[i]!=getIns2type()[i]) return false;
+//        }
+
+        return Math.abs(chromosome.makeSpan - makeSpan) < 0.0001 && Math.abs(chromosome.cost - cost) < 0.0001;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (cost+makeSpan);
     }
 }

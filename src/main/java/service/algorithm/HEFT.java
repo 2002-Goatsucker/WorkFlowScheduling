@@ -83,7 +83,7 @@ public class HEFT {
                 }
             }
 
-
+        return null;
         }
         Chromosome chromosome = new Chromosome(order, task2ins, ins2type);
 

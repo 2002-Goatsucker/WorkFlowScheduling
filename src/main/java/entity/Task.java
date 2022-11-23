@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,5 +72,9 @@ public class Task {
 
     public void setPredecessor(List<Integer> predecessor) {
         this.predecessor = predecessor;
+    }
+
+    public List<Integer> getSuccessors() {
+        return successor;
     }
 }

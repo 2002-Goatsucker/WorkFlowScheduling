@@ -16,13 +16,14 @@ public class DataUtils {
         double[] availableTime = new double[DataPool.insNum];
         Type[] types = new Type[chromosome.getTask().length];
         for (int i = 0; i < types.length; i++) {
-            types[i] = types[chromosome.getIns2type()[chromosome.getTask2ins()[i]]];
+            types[i] = DataPool.types[chromosome.getIns2type()[chromosome.getTask2ins()[i]]];
         }
         MakeSpanUtils.types = types;
         double exitTime = 0;
-        for (Task task : tasks) {
-            int insIndex = chromosome.getTask2ins()[task.getIndex()];
-            int typeIndex = chromosome.getIns2type()[chromosome.getTask2ins()[task.getIndex()]];
+        for (int i : chromosome.getTask()) {
+            Task task=DataPool.tasks[i];
+            int insIndex = chromosome.getTask2ins()[i];
+            int typeIndex = chromosome.getIns2type()[insIndex];
             if (task.getPredecessor().size() == 0) {
                 task.setStartTime(Math.max(0, availableTime[insIndex]));
                 task.setFinalTime(task.getStartTime() + MakeSpanUtils.getCompTime(task.getReferTime(), types[typeIndex].cu));
@@ -55,7 +56,7 @@ public class DataUtils {
         NSGAII.crossoverOrder(c1,c2);
         NSGAII.crossoverIns(c1,c2);
 
-        if(random.nextInt(10000) < Integer.parseInt(ConfigUtils.get("evolution.population.mutation")) * 10000){
+        if(random.nextInt(10000) < Double.parseDouble(ConfigUtils.get("evolution.population.mutation")) * 10000){
             DataPool.nsgaii.mutate(c1);
             DataPool.nsgaii.mutate(c2);
         }
