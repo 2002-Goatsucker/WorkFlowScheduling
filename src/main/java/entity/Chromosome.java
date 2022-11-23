@@ -16,6 +16,15 @@ public class Chromosome implements Cloneable {
     private int betterNum;
     private int poorNum;
 
+    public Chromosome(){
+
+    }
+    public Chromosome(int[] order, int[] task2ins, int[] ins2type) {
+        this.setTask(order);
+        this.setTask2ins(task2ins);
+        this.setIns2type(ins2type);
+    }
+
     public void setBetterNum(int betterNum) {
         this.betterNum = betterNum;
     }
@@ -106,5 +115,10 @@ public class Chromosome implements Cloneable {
         System.arraycopy(task2ins, 0, chromosome.task2ins, 0, task2ins.length);
         System.arraycopy(ins2type, 0, chromosome.ins2type, 0, ins2type.length);
         return chromosome;
+    }
+    public void print(){
+        System.out.println("Order:           " + this.getTask());
+        System.out.println("Task to Instance:" + this.getTask2ins());
+        System.out.println("Instance to type:" + this.getIns2type());
     }
 }
