@@ -24,38 +24,10 @@ public class DataUtils {
                 availableTime[insIndex] = task.getFinalTime();
             }
             if (task.getSuccessor().size() == 0) {
-                exitTime = Math.max(exitTime, task.getFinalTime());
+                exitTime = Math.max(exitTime, chromosome.getEnd()[taskIndex]);
             }
         }
         return exitTime;
-
-
-
-//        double[] availableTime = new double[DataPool.insNum];
-//        Type[] task2types = new Type[chromosome.getTask().length];
-//        for (int i = 0; i <task2types.length; i++) {
-//            task2types[i] = DataPool.types[chromosome.getIns2type()[chromosome.getTask2ins()[i]]];
-//        }
-//        MakeSpanUtils.task2types = task2types;
-//        double exitTime = 0;
-//        for (int i : chromosome.getTask()) {
-//            Task task=DataPool.tasks[i].clone();
-//            int insIndex = chromosome.getTask2ins()[i];
-//            int typeIndex = chromosome.getIns2type()[insIndex];
-//            if (task.getPredecessor().size() == 0) {
-//                task.setStartTime(Math.max(0, availableTime[insIndex]));
-//                task.setFinalTime(task.getStartTime() + MakeSpanUtils.getCompTime(task.getReferTime(), DataPool.types[typeIndex].cu));
-//                availableTime[insIndex] = task.getFinalTime();
-//            } else {
-//                task.setStartTime(MakeSpanUtils.getStartTime(availableTime[insIndex], task.getIndex(), task.getDataSize(), DataPool.types[typeIndex].bw));
-//                task.setFinalTime(task.getStartTime() + MakeSpanUtils.getCompTime(task.getReferTime(), DataPool.types[typeIndex].cu));
-//                availableTime[insIndex] = task.getFinalTime();
-//            }
-//            if (task.getSuccessor().size() == 0) {
-//                exitTime = Math.max(exitTime, task.getFinalTime());
-//            }
-//        }
-//        return exitTime;
     }
 
     public static double getCost(Chromosome chromosome){

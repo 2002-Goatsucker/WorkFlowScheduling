@@ -33,8 +33,8 @@ public class TaskGraph implements Cloneable{
         }
         if(isFirst){
             edges.add(new int[]{ver1,ver2});
-//            tasks[ver1].getSuccessor().add(ver2);
-//            tasks[ver2].getPredecessor().add(ver1);
+            tasks[ver1].getSuccessor().add(ver2);
+            tasks[ver2].getPredecessor().add(ver1);
         }
     }
 

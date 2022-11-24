@@ -12,8 +12,8 @@ public class Chromosome implements Cloneable {
     private double cost;
     private double makeSpan;
 
-    private double[] start;
-    private double[] end;
+    private double[] start=new double[DataPool.tasks.length];
+    private double[] end=new double[DataPool.tasks.length];
 
     private final List<Chromosome> better = new LinkedList<>();
     private final List<Chromosome> poor = new LinkedList<>();
@@ -169,6 +169,7 @@ public class Chromosome implements Cloneable {
             }
         }
         return true;
+//        return Math.abs(chromosome.getCost()-getCost())<0.001&&Math.abs(chromosome.getMakeSpan()-getMakeSpan())<0.001;
     }
 
     @Override

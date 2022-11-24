@@ -2,8 +2,8 @@ package controller.impl;
 
 import entity.Chromosome;
 import entity.DataPool;
-import service.algorithm.HEFT;
 import service.algorithm.impl.NSGAII;
+import utils.ConfigUtils;
 import utils.DataUtils;
 
 import java.util.LinkedList;
@@ -36,10 +36,21 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
                 while (num1 == num2) {
                     num2 = random.nextInt(getSize());
                 }
-                Chromosome child1 = getFa().get(num1);
-                Chromosome child2 = getFa().get(num2);
-                Chromosome child = DataUtils.getBetter(child1, child2);
-                if(!getSon().contains(child)&&!getFa().contains(child)) getSon().add(child);
+                Chromosome parent1 = getFa().get(num1).clone();
+                Chromosome parent2 = getFa().get(num2).clone();
+                List<Chromosome> childList = DataPool.nsgaii.crossover(parent1,parent2);
+                Chromosome child1=childList.get(0);
+                Chromosome child2=childList.get(1);
+                if(random.nextInt(10000) < Double.parseDouble(ConfigUtils.get("evolution.population.mutation")) * 10000){
+                    child1 = DataPool.nsgaii.mutate(child1);
+                    child2 = DataPool.nsgaii.mutate(child2);
+                }
+                child1.setCost(DataUtils.getCost(child1));
+                child1.setMakeSpan(DataUtils.getMakeSpan(child1));
+                child2.setCost(DataUtils.getCost(child2));
+                child2.setMakeSpan(DataUtils.getMakeSpan(child2));
+                getSon().add(child1);
+                getSon().add(child2);
             }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -112,13 +123,9 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
     public void doEliminate() {
         getFa().clear();
         for (List<Chromosome> list : getRank()) {
-            if (getFa().size() + list.size() <= getSize()) {
-                getFa().addAll(list);
-            } else {
-                int i = 0;
-                while (getFa().size() < getSize()) {
-                    getFa().add(list.get(i++));
-                }
+            for(Chromosome chromosome:list){
+                if(!getFa().contains(chromosome)) getFa().add(chromosome);
+                if(getFa().size()>=getSize()) return;
             }
         }
     }

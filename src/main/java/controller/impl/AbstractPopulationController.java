@@ -65,7 +65,6 @@ public abstract class AbstractPopulationController implements PopulationControll
     @Override
     public List<List<Chromosome>> iterate() {
         int generation = Integer.parseInt(ConfigUtils.get("evolution.population.generation"));
-        Random random = new Random();
         try {
             doInitial();
             if(generation==0) {
@@ -84,8 +83,6 @@ public abstract class AbstractPopulationController implements PopulationControll
             for (Chromosome chromosome : fa) {
                 chromosome.setBetterNum(0);
                 chromosome.setPoorNum(0);
-                chromosome.setCost(DataUtils.getCost(chromosome));
-                chromosome.setMakeSpan(DataUtils.getMakeSpan(chromosome));
                 chromosome.getBetter().clear();
                 chromosome.getPoor().clear();
             }

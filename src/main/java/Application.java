@@ -31,6 +31,8 @@ public class Application {
         PopulationController controller=new NSGAIIPopulationController();
         List<List<Chromosome>> list = controller.iterate();
         Output output=new ChartOutputImpl();
+        Output output1=new ConsoleOutputImpl();
         output.output(list);
+        output1.output(list);
     }
 }
