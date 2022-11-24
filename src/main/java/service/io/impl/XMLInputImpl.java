@@ -8,7 +8,6 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import service.io.Input;
-
 import java.util.ResourceBundle;
 
 public class XMLInputImpl implements Input {

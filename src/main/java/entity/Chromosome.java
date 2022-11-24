@@ -11,7 +11,7 @@ public class Chromosome implements Cloneable {
     private int[] ins2type;
     private double cost;
     private double makeSpan;
-
+    private double crowding;
     private double[] start=new double[DataPool.tasks.length];
     private double[] end=new double[DataPool.tasks.length];
 
@@ -175,5 +175,13 @@ public class Chromosome implements Cloneable {
     @Override
     public int hashCode() {
         return (int) (cost + makeSpan);
+    }
+
+    public double getCrowding() {
+        return crowding;
+    }
+
+    public void setCrowding(double crowding) {
+        this.crowding = crowding;
     }
 }

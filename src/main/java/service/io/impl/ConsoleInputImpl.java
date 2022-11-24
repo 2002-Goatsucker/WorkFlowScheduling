@@ -5,6 +5,7 @@ import entity.Task;
 import entity.TaskGraph;
 import service.io.Input;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class ConsoleInputImpl implements Input {
@@ -21,18 +22,18 @@ public class ConsoleInputImpl implements Input {
         int total = input.nextInt();
         //初始化数据池(task及其依赖关系，graph用作拓扑排序)
         DataPool.tasks=new Task[total];
+        DataPool.insNum=total;
         DataPool.graph=new TaskGraph(total);
         for(int i=0;i<DataPool.tasks.length;++i){
             DataPool.tasks[i]=new Task(i);
+            DataPool.tasks[i].setDataSize(new Random().nextInt(100000,999999));
+            DataPool.tasks[i].setReferTime(new Random().nextInt(10,30));
         }
         while (true) {
-            String str=input.nextLine();
-            if(str.equals("x")) break;
-            else {
-                int ver1=Integer.parseInt(input.next());
-                int ver2=Integer.parseInt(input.next());
-                DataPool.graph.addEdge(ver1,ver2);
-            }
+            String str1=input.next();
+            if(str1.equals("x")) break;
+            String str2=input.next();
+            DataPool.graph.addEdge(Integer.parseInt(str1),Integer.parseInt(str2));
         }
         System.out.println("--------------------End line--------------------");
     }

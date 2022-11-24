@@ -2,26 +2,34 @@ package controller.impl;
 
 import entity.Chromosome;
 import entity.DataPool;
+import service.algorithm.CostMin;
+import service.algorithm.HEFT;
 import service.algorithm.impl.NSGAII;
 import utils.ConfigUtils;
 import utils.DataUtils;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class NSGAIIPopulationController extends AbstractPopulationController {
     private final NSGAII nsgaii = DataPool.nsgaii;
 
     @Override
-    public void doInitial() throws CloneNotSupportedException {
-        int size = getSize();
-//        Chromosome heft=HEFT.generateChromosome();
-//        heft.setCost(DataUtils.getCost(heft));
-//        heft.setMakeSpan(DataUtils.getMakeSpan(heft));
-//        getFa().add(heft);
+    public void doInitial() {
+        Chromosome heft=HEFT.generateChromosome();
+        heft.setCost(DataUtils.getCost(heft));
+        heft.setMakeSpan(DataUtils.getMakeSpan(heft));
+        getFa().add(heft);
+        Chromosome chromosome1= HEFT.generateChromosome();
+        chromosome1.setCost(DataUtils.getCost(chromosome1));
+        chromosome1.setMakeSpan(DataUtils.getMakeSpan(chromosome1));
+        getFa().add(chromosome1);
+        Chromosome chromosome2= CostMin.getMinCostChromosome();
+        chromosome2.setCost(DataUtils.getCost(chromosome2));
+        chromosome2.setMakeSpan(DataUtils.getMakeSpan(chromosome2));
+        getFa().add(chromosome2);
+
         while (getFa().size() < getSize()) {
-            Chromosome chromosome=DataUtils.getRandomChromosome();
+            Chromosome chromosome=DataUtils.getInitialChromosome();
             if(!getFa().contains(chromosome)) getFa().add(chromosome);
         }
     }
@@ -73,20 +81,20 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
             Chromosome chromosome = list.get(i);
             for (int j = i + 1; j < list.size(); ++j) {
                 Chromosome other = list.get(j);
-                if (chromosome.getMakeSpan() - other.getMakeSpan() < -0.0001 && chromosome.getCost() - other.getCost() < -0.0001) {
+                if (chromosome.getMakeSpan() - other.getMakeSpan() < -0.000000001 && chromosome.getCost() - other.getCost() < -0.000000001) {
                     setBetterAndPoor(chromosome, other);
-                } else if (other.getMakeSpan() - chromosome.getMakeSpan() < -0.0001 && other.getCost() - chromosome.getCost() < -0.0001) {
+                } else if (other.getMakeSpan() - chromosome.getMakeSpan() < -0.000000001 && other.getCost() - chromosome.getCost() < -0.000000001) {
                     setBetterAndPoor(other, chromosome);
-                } else if (Math.abs(chromosome.getMakeSpan() - other.getMakeSpan()) < 0.0001) {
-                    if (chromosome.getCost() - other.getCost() < -0.0001) {
+                } else if (Math.abs(chromosome.getMakeSpan() - other.getMakeSpan()) < 0.000000001) {
+                    if (chromosome.getCost() - other.getCost() < -0.000000001) {
                         setBetterAndPoor(chromosome, other);
-                    } else if (other.getCost() - chromosome.getCost() < -0.0001) {
+                    } else if (other.getCost() - chromosome.getCost() < -0.000000001) {
                         setBetterAndPoor(other, chromosome);
                     }
-                } else if (Math.abs(chromosome.getCost() - other.getCost()) < 0.0001) {
-                    if (chromosome.getMakeSpan() - other.getMakeSpan() < -0.0001) {
+                } else if (Math.abs(chromosome.getCost() - other.getCost()) < 0.000000001) {
+                    if (chromosome.getMakeSpan() - other.getMakeSpan() < -0.000000001) {
                         setBetterAndPoor(chromosome, other);
-                    } else if (other.getMakeSpan() - chromosome.getMakeSpan() < -0.0001) {
+                    } else if (other.getMakeSpan() - chromosome.getMakeSpan() < -0.000000001) {
                         setBetterAndPoor(other, chromosome);
                     }
                 }
@@ -122,6 +130,26 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
     @Override
     public void doEliminate() {
         getFa().clear();
+
+        List<List<Chromosome>> rank=getRank();
+        for(List<Chromosome> list:rank){
+            list.sort((o1, o2) -> {
+                if (o1.getMakeSpan() - o2.getMakeSpan() > 0.000000001) return 1;
+                else if (o1.getMakeSpan() - o2.getMakeSpan() < -0.000000001) return -1;
+                return 0;
+            });
+            list.get(0).setCrowding(Double.MAX_VALUE);
+            list.get(list.size()-1).setCrowding(Double.MAX_VALUE);
+            for(int i=1;i<list.size()-1;++i){
+                list.get(i).setCrowding(Math.abs(list.get(i+1).getMakeSpan()-list.get(i-1).getMakeSpan())*Math.abs(list.get(i+1).getCost()-list.get(i-1).getCost()));
+            }
+            list.sort((o1,o2)-> {
+                double num = o1.getCrowding() - o2.getCrowding();
+                if(num>0) return -1;
+                if(num<0) return 1;
+                return 0;
+            });
+        }
         for (List<Chromosome> list : getRank()) {
             for(Chromosome chromosome:list){
                 if(!getFa().contains(chromosome)) getFa().add(chromosome);

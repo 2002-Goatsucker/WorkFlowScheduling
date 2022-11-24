@@ -93,11 +93,13 @@ public class TaskGraph implements Cloneable{
         for(int i=list.size()-1;i>=0;--i){
             if(fa.contains(vertices[list.get(i)])){
                 start=i+1;
+                break;
             }
         }
         for(int i=0;i<list.size();++i){
             if(next.contains(vertices[list.get(i)])){
                 end=i;
+                break;
             }
         }
         int pos = random.nextInt(start,end+1);

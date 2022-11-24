@@ -21,7 +21,7 @@ public class DataUtils {
             } else {
                 chromosome.getStart()[taskIndex] = Math.max(getStartTime(chromosome, taskIndex), availableTime[insIndex]);
                 chromosome.getEnd()[taskIndex] = chromosome.getStart()[taskIndex] + DataPool.tasks[taskIndex].getReferTime() / DataPool.types[typeIndex].cu;
-                availableTime[insIndex] = task.getFinalTime();
+                availableTime[insIndex] = chromosome.getEnd()[taskIndex];
             }
             if (task.getSuccessor().size() == 0) {
                 exitTime = Math.max(exitTime, chromosome.getEnd()[taskIndex]);
@@ -32,7 +32,7 @@ public class DataUtils {
 
     public static double getCost(Chromosome chromosome){
         double sum = 0;
-        for (int taskIndex : chromosome.getTask2ins()) {
+        for (int taskIndex : chromosome.getTask()) {
             int instanceIndex = chromosome.getTask2ins()[taskIndex];
             int typeIndex = chromosome.getIns2type()[instanceIndex];
             sum += DataPool.types[typeIndex].p * (DataPool.tasks[taskIndex].getReferTime()/DataPool.types[typeIndex].cu);
@@ -73,6 +73,24 @@ public class DataUtils {
         chromosome.setTask(taskOrder);
         chromosome.setTask2ins(NSGAII.getRandomInstance(taskOrder.length));
         chromosome.setIns2type(NSGAII.getRandomType(taskOrder.length));
+        chromosome.setCost(DataUtils.getCost(chromosome));
+        chromosome.setMakeSpan(DataUtils.getMakeSpan(chromosome));
+        return chromosome;
+    }
+
+    public static Chromosome getInitialChromosome(){
+        int[] order=DataUtils.getRandomTopologicalSorting();
+        int[] ins=new int[order.length];
+        int[] type=new int[order.length];
+        int num=random.nextInt(10);
+        if(num<5) {
+            for(int i=0;i<ins.length;++i){
+                ins[i]=random.nextInt(order.length);
+            }
+        }
+        int t=random.nextInt(DataPool.types.length);
+        Arrays.fill(type, t);
+        Chromosome chromosome =  new Chromosome(order,ins,type);
         chromosome.setCost(DataUtils.getCost(chromosome));
         chromosome.setMakeSpan(DataUtils.getMakeSpan(chromosome));
         return chromosome;
