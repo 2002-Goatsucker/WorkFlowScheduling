@@ -2,8 +2,9 @@ package utils;
 import entity.*;
 import service.algorithm.impl.NSGAII;
 
-import java.util.*;
-
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 public class DataUtils {
     private static final Random random=new Random();
     public static double getMakeSpan(Chromosome chromosome) {
@@ -22,6 +23,10 @@ public class DataUtils {
                 chromosome.getEnd()[taskIndex] = chromosome.getStart()[taskIndex] + DataPool.tasks[taskIndex].getReferTime() / DataPool.types[typeIndex].cu;
                 availableTime[insIndex] = chromosome.getEnd()[taskIndex];
             }
+            if (DataPool.LaunchTime[insIndex] == 0){
+                DataPool.LaunchTime[insIndex] = chromosome.getStart()[taskIndex];
+            }
+            DataPool.ShutdownTime[insIndex] = chromosome.getEnd()[taskIndex];
             if (task.getSuccessor().size() == 0) {
                 exitTime = Math.max(exitTime, chromosome.getEnd()[taskIndex]);
             }
@@ -31,26 +36,20 @@ public class DataUtils {
 
     public static double getCost(Chromosome chromosome){
         double sum = 0;
-        for (int taskIndex : chromosome.getTask()) {
-            int instanceIndex = chromosome.getTask2ins()[taskIndex];
-            int typeIndex = chromosome.getIns2type()[instanceIndex];
-            sum += DataPool.types[typeIndex].p;
+//        for (int taskIndex : chromosome.getTask()) {
+//            int instanceIndex = chromosome.getTask2ins()[taskIndex];
+//            int typeIndex = chromosome.getIns2type()[instanceIndex];
+//            sum += DataPool.types[typeIndex].p * (DataPool.tasks[taskIndex].getReferTime()/DataPool.types[typeIndex].cu);
+//        }
+        int[] ins_flags = new int[DataPool.insNum];
+        for (int ins_index : chromosome.getTask2ins()){
+            if(ins_flags[ins_index] == 0){
+                int type_index = chromosome.getIns2type()[ins_index];
+                sum += (DataPool.ShutdownTime[ins_index] - DataPool.LaunchTime[ins_index]) * DataPool.types[type_index].p/3600;
+                ins_flags[ins_index] = 1;
+            }
         }
         return sum;
-    }
-
-    public static double getHV(int makeSpan,int cost,List<Chromosome> paretoFront){
-        paretoFront.sort((o1, o2) -> {
-            if (o1.getMakeSpan()-o2.getMakeSpan()>0) return 1;
-            if(o1.getMakeSpan()-o2.getMakeSpan()<0) return -1;
-            return 0;
-        });
-
-        double size=(makeSpan-paretoFront.get(0).getMakeSpan())*(cost-paretoFront.get(0).getCost());
-        for(int i=1;i<paretoFront.size();++i){
-            size+=(paretoFront.get(i-1).getCost()-paretoFront.get(i).getCost())*(makeSpan-paretoFront.get(i).getMakeSpan());
-        }
-        return size;
     }
 
     public static Chromosome getBetter(Chromosome chromosome1, Chromosome chromosome2) throws CloneNotSupportedException {
