@@ -15,7 +15,5 @@ public class DataPool {
     public static int insNum;
     public static int typeNum;
     public static Type[] types;
-    public static double[] LaunchTime;
-    public static double[] ShutdownTime;
 
 }

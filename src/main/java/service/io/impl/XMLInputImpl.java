@@ -18,8 +18,6 @@ public class XMLInputImpl implements Input {
             int size= Integer.parseInt(bundle.getString("file.taskGraph.size"));
             DataPool.graph=new TaskGraph(size);
             DataPool.insNum=size;
-            DataPool.LaunchTime = new double[size];
-            DataPool.ShutdownTime = new double[size];
             DataPool.tasks=new Task[size];
             for(int i=0;i<size;++i){
                 DataPool.tasks[i]=new Task(i);

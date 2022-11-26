@@ -57,10 +57,11 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
                     child1 = DataPool.nsgaii.mutate(child1);
                     child2 = DataPool.nsgaii.mutate(child2);
                 }
-                child1.setCost(DataUtils.getCost(child1));
                 child1.setMakeSpan(DataUtils.getMakeSpan(child1));
-                child2.setCost(DataUtils.getCost(child2));
+                child1.setCost(DataUtils.getCost(child1));
                 child2.setMakeSpan(DataUtils.getMakeSpan(child2));
+                child2.setCost(DataUtils.getCost(child2));
+
                 getSon().add(child1);
                 getSon().add(child2);
             }

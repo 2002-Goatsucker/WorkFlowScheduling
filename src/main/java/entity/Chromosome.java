@@ -14,6 +14,8 @@ public class Chromosome implements Cloneable {
     private double crowding;
     private double[] start=new double[DataPool.tasks.length];
     private double[] end=new double[DataPool.tasks.length];
+    public double[] launchTime=new double[DataPool.tasks.length];
+    public double[] shutdownTime=new double[DataPool.tasks.length];
 
     private final List<Chromosome> better = new LinkedList<>();
     private final List<Chromosome> poor = new LinkedList<>();
@@ -138,6 +140,8 @@ public class Chromosome implements Cloneable {
         chromosome.ins2type = new int[ins2type.length];
         chromosome.start=new double[start.length];
         chromosome.end=new double[end.length];
+        double[] launch=new double[task.length];
+        double[] shutdown=new double[task.length];
         chromosome.cost = cost;
         chromosome.makeSpan = makeSpan;
         System.arraycopy(task, 0, chromosome.task, 0, task.length);
@@ -145,7 +149,8 @@ public class Chromosome implements Cloneable {
         System.arraycopy(ins2type, 0, chromosome.ins2type, 0, ins2type.length);
         System.arraycopy(start, 0, chromosome.start, 0, start.length);
         System.arraycopy(end, 0, chromosome.end, 0, end.length);
-
+        System.arraycopy(launch,0,chromosome.launchTime,0,launch.length);
+        System.arraycopy(shutdown, 0, chromosome.shutdownTime, 0, shutdown.length);
         return chromosome;
     }
 
