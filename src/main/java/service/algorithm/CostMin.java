@@ -6,6 +6,7 @@ import utils.ConfigUtils;
 import utils.DataUtils;
 
 public class CostMin {
+    @Deprecated
     public static Chromosome getMinCostChromosome(){
         int n = DataPool.tasks.length;
         int[] order= DataUtils.getRandomTopologicalSorting();
@@ -26,6 +27,5 @@ public class CostMin {
         }
         Chromosome chromosome=new Chromosome(order,ins,type);
         return chromosome;
-
     }
 }

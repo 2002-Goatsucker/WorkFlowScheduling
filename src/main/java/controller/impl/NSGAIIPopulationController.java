@@ -15,18 +15,18 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
 
     @Override
     public void doInitial() {
-        Chromosome heft=HEFT.generateChromosome();
-        heft.setCost(DataUtils.getCost(heft));
-        heft.setMakeSpan(DataUtils.getMakeSpan(heft));
-        getFa().add(heft);
-        Chromosome chromosome1= HEFT.generateChromosome();
-        chromosome1.setCost(DataUtils.getCost(chromosome1));
-        chromosome1.setMakeSpan(DataUtils.getMakeSpan(chromosome1));
-        getFa().add(chromosome1);
-        Chromosome chromosome2= CostMin.getMinCostChromosome();
-        chromosome2.setCost(DataUtils.getCost(chromosome2));
-        chromosome2.setMakeSpan(DataUtils.getMakeSpan(chromosome2));
-        getFa().add(chromosome2);
+//        Chromosome heft=HEFT.generateChromosome();
+//        heft.setCost(DataUtils.getCost(heft));
+//        heft.setMakeSpan(DataUtils.getMakeSpan(heft));
+//        getFa().add(heft);
+//        Chromosome chromosome1= HEFT.generateChromosome();
+//        chromosome1.setCost(DataUtils.getCost(chromosome1));
+//        chromosome1.setMakeSpan(DataUtils.getMakeSpan(chromosome1));
+//        getFa().add(chromosome1);
+//        Chromosome chromosome2= CostMin.getMinCostChromosome();
+//        chromosome2.setCost(DataUtils.getCost(chromosome2));
+//        chromosome2.setMakeSpan(DataUtils.getMakeSpan(chromosome2));
+//        getFa().add(chromosome2);
 
         while (getFa().size() < getSize()) {
             Chromosome chromosome=DataUtils.getInitialChromosome();
@@ -46,9 +46,13 @@ public class NSGAIIPopulationController extends AbstractPopulationController {
                 }
                 Chromosome parent1 = getFa().get(num1).clone();
                 Chromosome parent2 = getFa().get(num2).clone();
-                List<Chromosome> childList = DataPool.nsgaii.crossover(parent1,parent2);
-                Chromosome child1=childList.get(0);
-                Chromosome child2=childList.get(1);
+                Chromosome child1;
+                Chromosome child2;
+                do {
+                    List<Chromosome> childList = DataPool.nsgaii.crossover(parent1, parent2);
+                    child1 = childList.get(0);
+                    child2 = childList.get(1);
+                } while (getFa().contains(child1) || getFa().contains(child2) || getSon().contains(child1) || getSon().contains(child2));
                 if(random.nextInt(10000) < Double.parseDouble(ConfigUtils.get("evolution.population.mutation")) * 10000){
                     child1 = DataPool.nsgaii.mutate(child1);
                     child2 = DataPool.nsgaii.mutate(child2);

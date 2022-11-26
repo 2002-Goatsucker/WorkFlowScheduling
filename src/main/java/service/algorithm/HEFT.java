@@ -77,7 +77,9 @@ public class HEFT {
                 }
             }
         }
-
+//        for (int i = 0; i < n; i++) {
+//            task2ins[i] = i;
+//        }
         c.setTask(indexes);
         c.setTask2ins(task2ins);
         c.setIns2type(ins2type);

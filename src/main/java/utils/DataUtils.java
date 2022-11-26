@@ -2,9 +2,8 @@ package utils;
 import entity.*;
 import service.algorithm.impl.NSGAII;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 public class DataUtils {
     private static final Random random=new Random();
     public static double getMakeSpan(Chromosome chromosome) {
@@ -35,9 +34,23 @@ public class DataUtils {
         for (int taskIndex : chromosome.getTask()) {
             int instanceIndex = chromosome.getTask2ins()[taskIndex];
             int typeIndex = chromosome.getIns2type()[instanceIndex];
-            sum += DataPool.types[typeIndex].p * (DataPool.tasks[taskIndex].getReferTime()/DataPool.types[typeIndex].cu);
+            sum += DataPool.types[typeIndex].p;
         }
         return sum;
+    }
+
+    public static double getHV(int makeSpan,int cost,List<Chromosome> paretoFront){
+        paretoFront.sort((o1, o2) -> {
+            if (o1.getMakeSpan()-o2.getMakeSpan()>0) return 1;
+            if(o1.getMakeSpan()-o2.getMakeSpan()<0) return -1;
+            return 0;
+        });
+
+        double size=(makeSpan-paretoFront.get(0).getMakeSpan())*(cost-paretoFront.get(0).getCost());
+        for(int i=1;i<paretoFront.size();++i){
+            size+=(paretoFront.get(i-1).getCost()-paretoFront.get(i).getCost())*(makeSpan-paretoFront.get(i).getMakeSpan());
+        }
+        return size;
     }
 
     public static Chromosome getBetter(Chromosome chromosome1, Chromosome chromosome2) throws CloneNotSupportedException {

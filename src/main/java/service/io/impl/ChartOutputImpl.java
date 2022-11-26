@@ -39,9 +39,9 @@ public class ChartOutputImpl implements Output {
                 false//是否生成URL连接
         );
         NumberAxis axis= (NumberAxis) freeChart.getXYPlot().getDomainAxis();
-        axis.setAutoTickUnitSelection(false);
+        axis.setAutoTickUnitSelection(true);
 
-        axis.setTickUnit(new NumberTickUnit(1));
+//        axis.setTickUnit(new NumberTickUnit(1));
 
         ChartPanel chartPanel = new ChartPanel(freeChart);
         chartPanel.setPreferredSize(new java.awt.Dimension(560, 400));

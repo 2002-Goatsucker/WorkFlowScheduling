@@ -9,6 +9,7 @@ import entity.Type;
 public class MakeSpanUtils {
     public static Type[] task2types;
 
+    @Deprecated
     public static double getCompTime(double referTime,double cu){
         return referTime/cu;
     }
@@ -17,6 +18,7 @@ public class MakeSpanUtils {
         return dataSize/brandWidth;
     }
 
+    @Deprecated
     public static double getStartTime(double availableTime, Task task, double dataSize, double brandWidth){
         double max = 0;
         for(int temp: task.getPredecessor()){

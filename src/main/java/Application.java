@@ -7,10 +7,7 @@ import entity.Type;
 import service.algorithm.CostMin;
 import service.io.Input;
 import service.io.Output;
-import service.io.impl.ChartOutputImpl;
-import service.io.impl.ConsoleInputImpl;
-import service.io.impl.ConsoleOutputImpl;
-import service.io.impl.XMLInputImpl;
+import service.io.impl.*;
 import utils.DataUtils;
 
 import java.util.List;
@@ -34,16 +31,11 @@ public class Application {
         List<List<Chromosome>> list = controller.iterate();
         Output output=new ChartOutputImpl();
         Output output1=new ConsoleOutputImpl();
+        Output output2=new FileOutputImpl();
         output.output(list);
         output1.output(list);
-
-//        for(Chromosome chromosome1:list.get(0)){
-//            if(chromosome1.getCost()<chromosome.getCost()) {
-//                chromosome1.print();
-//            }
-//        }
-
-
+        output2.output(list);
+        System.out.println(DataUtils.getHV(500,100,list.get(0)));
 
     }
 }

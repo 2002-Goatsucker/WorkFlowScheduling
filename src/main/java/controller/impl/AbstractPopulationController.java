@@ -86,13 +86,13 @@ public abstract class AbstractPopulationController implements PopulationControll
                 chromosome.getBetter().clear();
                 chromosome.getPoor().clear();
             }
-            List<Chromosome> temp = fa.stream().distinct().toList();
-            temp = new LinkedList<>(temp);
-            while (temp.size() < getSize()) {
-                Chromosome chromosome = DataUtils.getRandomChromosome();
-                if(!temp.contains(chromosome)) getFa().add(chromosome);
-            }
-            fa = temp;
+//            List<Chromosome> temp = fa.stream().distinct().toList();
+//            temp = new LinkedList<>(temp);
+//            while (temp.size() < getSize()) {
+//                Chromosome chromosome = DataUtils.getInitialChromosome();
+//                if(!temp.contains(chromosome)) getFa().add(chromosome);
+//            }
+//            fa = temp;
         }
         return rank;
     }

@@ -37,9 +37,9 @@ public class XMLInputImpl implements Input {
                 }else if(child.getName().equals("job")){
                     int id=Integer.parseInt(child.attributeValue("id").substring(2));
                     double referTime=Double.parseDouble(child.attributeValue("runtime"));
-                    int totalSize=0;
+                    long totalSize=0;
                     for(Element element:child.elements()){
-                        totalSize+=Integer.parseInt(element.attributeValue("size"));
+                        totalSize+=Long.parseLong(element.attributeValue("size"));
                     }
                     DataPool.tasks[id].setDataSize(totalSize);
                     DataPool.tasks[id].setReferTime(referTime);
