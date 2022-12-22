@@ -7,7 +7,8 @@ import java.util.List;
 
 public class Task implements Cloneable{
     private int index;
-    private double dataSize;
+    private double inputSize;
+    private double outputSize;
     private double referTime;
     private double startTime;
     private double finalTime;
@@ -27,12 +28,20 @@ public class Task implements Cloneable{
         this.index = index;
     }
 
-    public double getDataSize() {
-        return dataSize;
+    public double getInputSize() {
+        return inputSize;
     }
 
-    public void setDataSize(double dataSize) {
-        this.dataSize = dataSize;
+    public void setInputSize(double inputSize) {
+        this.inputSize = inputSize;
+    }
+
+    public double getOutputSize() {
+        return outputSize;
+    }
+
+    public void setOutputSize(double outputSize) {
+        this.outputSize = outputSize;
     }
 
     public double getReferTime() {
@@ -82,7 +91,8 @@ public class Task implements Cloneable{
     @Override
     public Task clone() {
         Task task=new Task(index);
-        task.setDataSize(dataSize);
+        task.setInputSize(inputSize);
+        task.setOutputSize(outputSize);
         task.setReferTime(referTime);
         task.setSuccessor(successor);
         task.setPredecessor(predecessor);

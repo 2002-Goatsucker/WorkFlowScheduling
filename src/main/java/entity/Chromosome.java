@@ -11,6 +11,8 @@ public class Chromosome implements Cloneable {
     private int[] ins2type;
     private double cost;
     private double makeSpan;
+    private double utilization;
+    private double degreeImbalance;
     private double crowding;
     private double[] start=new double[DataPool.tasks.length];
     private double[] end=new double[DataPool.tasks.length];
@@ -140,8 +142,9 @@ public class Chromosome implements Cloneable {
         chromosome.ins2type = new int[ins2type.length];
         chromosome.start=new double[start.length];
         chromosome.end=new double[end.length];
-        double[] launch=new double[task.length];
-        double[] shutdown=new double[task.length];
+        chromosome.launchTime=new double[task.length];
+        chromosome.shutdownTime=new double[task.length];
+
         chromosome.cost = cost;
         chromosome.makeSpan = makeSpan;
         System.arraycopy(task, 0, chromosome.task, 0, task.length);
@@ -149,8 +152,6 @@ public class Chromosome implements Cloneable {
         System.arraycopy(ins2type, 0, chromosome.ins2type, 0, ins2type.length);
         System.arraycopy(start, 0, chromosome.start, 0, start.length);
         System.arraycopy(end, 0, chromosome.end, 0, end.length);
-        System.arraycopy(launch,0,chromosome.launchTime,0,launch.length);
-        System.arraycopy(shutdown, 0, chromosome.shutdownTime, 0, shutdown.length);
         return chromosome;
     }
 
@@ -163,18 +164,12 @@ public class Chromosome implements Cloneable {
     @Override
     public boolean equals(Object obj) {
         Chromosome chromosome = (Chromosome) obj;
-//        for(int i=0;i<task.length;++i){
-//            if(chromosome.getTask()[i]!=task[i]) return false;
-//            if(chromosome.getTask2ins()[i]!=getTask2ins()[i]) return false;
-//            if(chromosome.getIns2type()[i]!=getIns2type()[i]) return false;
-//        }
         for (int i = 0; i < chromosome.getTask().length; ++i) {
             if (chromosome.getTask()[i] != getTask()[i] || chromosome.getIns2type()[i] != getIns2type()[i] || chromosome.getTask2ins()[i] == getTask2ins()[i]) {
                 return false;
             }
         }
         return true;
-//        return Math.abs(chromosome.getCost()-getCost())<0.001&&Math.abs(chromosome.getMakeSpan()-getMakeSpan())<0.001;
     }
 
     @Override
@@ -182,11 +177,30 @@ public class Chromosome implements Cloneable {
         return (int) (cost + makeSpan);
     }
 
+
+
+
     public double getCrowding() {
         return crowding;
     }
 
     public void setCrowding(double crowding) {
         this.crowding = crowding;
+    }
+
+    public double getDegreeImbalance() {
+        return degreeImbalance;
+    }
+
+    public void setDegreeImbalance(double degreeImbalance) {
+        this.degreeImbalance = degreeImbalance;
+    }
+
+    public double getUtilization() {
+        return utilization;
+    }
+
+    public void setUtilization(double utilization) {
+        this.utilization = utilization;
     }
 }

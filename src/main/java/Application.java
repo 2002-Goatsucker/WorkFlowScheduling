@@ -5,6 +5,7 @@ import entity.DataPool;
 import entity.Task;
 import entity.Type;
 import service.algorithm.CostMin;
+import service.algorithm.HEFT;
 import service.io.Input;
 import service.io.Output;
 import service.io.impl.*;
@@ -35,6 +36,7 @@ public class Application {
         output.output(list);
         output1.output(list);
         output2.output(list);
+        System.out.println(DataUtils.operateHV(list.get(0)));
 //        System.out.println(DataUtils.getHV(500,100,list.get(0)));
 
     }

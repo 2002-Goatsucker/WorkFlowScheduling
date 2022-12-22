@@ -13,7 +13,8 @@ public class ConsoleOutputImpl implements Output {
         for(List<Chromosome> list1:list){
             System.out.println("--------------------Rank"+k+"--------------------");
             for (Chromosome chromosome:list1){
-                System.out.println("MakeSpan: "+chromosome.getMakeSpan()+" & "+"Cost: "+chromosome.getCost());
+                System.out.println("MakeSpan: "+chromosome.getMakeSpan()+" & "+"Cost: "+chromosome.getCost()
+                        + " & " + "Utilization: "+chromosome.getUtilization() + " & " + "DegreeImbalance: "+chromosome.getDegreeImbalance());
             }
             k++;
         }

@@ -15,7 +15,6 @@
             <artifactId>jenetics</artifactId>
             <version>7.1.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
@@ -32,6 +31,13 @@
             <artifactId>jcommon</artifactId>
             <version>1.0.16</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.uma.jmetal/jmetal-algorithm -->
+        <dependency>
+            <groupId>org.uma.jmetal</groupId>
+            <artifactId>jmetal-algorithm</artifactId>
+            <version>6.0</version>
+        </dependency>
+
     </dependencies>
 
 

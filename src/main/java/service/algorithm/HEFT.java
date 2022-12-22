@@ -6,9 +6,6 @@ import entity.Task;
 import entity.Type;
 import utils.DataUtils;
 
-import javax.swing.*;
-import java.util.*;
-
 /**
  * Heterogeneous Earliest-Finish-Time (HEFT)
  * The HEFT algorithm selects the task with the highest upward rank value at each step
@@ -24,66 +21,94 @@ import java.util.*;
  * All we need to do is decide which instance to take.
  */
 public class HEFT {
+    public static double[] upward_rank = new double[DataPool.tasks.length];
+
     public static Chromosome generateChromosome() {
-        Chromosome c = new Chromosome();
-        Task[] tasks = DataPool.tasks;
-        int n = tasks.length;
-        Type[] types = DataPool.types;
-        Type best_type = types[0];
-        for (Type type : types) {
+        int n = DataPool.tasks.length;
+        Type best_type = DataPool.types[0];
+        for (Type type : DataPool.types) {
             if (type.cu > best_type.cu) {
                 best_type = type;
             }
         }
-        
-        int[] task2ins = new int[n];
-        int[] ins2type = new int[n];
+        //Task Prioritize Phase
+        for (Task task : DataPool.tasks) {
+            if (task.getPredecessor().size() == 0) {
+                calculate_rank(task.getIndex(), best_type);
+            }
+        }
 
-        double[] rank = new double[n];
-        Queue<Task> waiting = new LinkedList<Task>();
-        Set<Task> finished = new HashSet<Task>();
-        for (Task task : tasks) {
-            if (task.getSuccessor().size() == 0) {
-                waiting.add(task);
-                finished.add(task);
-                rank[task.getIndex()] = task.getReferTime() / best_type.cu;
-            }
-        }
-        while (!waiting.isEmpty()) {
-            Task cur = waiting.remove();
-            finished.add(cur);
-            for (int index : cur.getPredecessor()) {
-                Task pre = tasks[index];
-                if (!finished.contains(pre)) {
-                    waiting.add(pre);
-                }
-                rank[index] = Math.max(rank[index], rank[cur.getIndex()] + cur.getDataSize() / best_type.bw);
-            }
-        }
-        int[] indexes = new int[n];
+//        Arrays.stream(upward_rank).forEach(System.out::println);
+
+        //Processor Selection Phase\
+        int[] ins2type = new int[n];
         for (int i = 0; i < n; i++) {
-            indexes[i] = i;
+            ins2type[i] = best_type.id;
+        }
+
+        int[] order = new int[n];
+        for (int i = 0; i < n; i++) {
+            order[i] = i;
         }
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
-                if (rank[i] < rank[j]) {
-                    double temp = rank[i];
-                    rank[i] = rank[j];
-                    rank[j] = temp;
+                if (upward_rank[j] > upward_rank[i]) {
+                    double temp = upward_rank[j];
+                    upward_rank[j] = upward_rank[i];
+                    upward_rank[i] = temp;
 
-                    int t = indexes[i];
-                    indexes[i] = indexes[j];
-                    indexes[j] = t;
+                    int t = order[i];
+                    order[i] = order[j];
+                    order[j] = t;
+
                 }
             }
         }
-//        for (int i = 0; i < n; i++) {
-//            task2ins[i] = i;
-//        }
-        c.setTask(indexes);
-        c.setTask2ins(task2ins);
-        c.setIns2type(ins2type);
+        double[] available_time = new double[n];
 
-        return c;
+        int[] task2ins = new int[n];
+        task2ins[0] = 0;
+        available_time[0] = DataPool.tasks[0].getReferTime() / best_type.cu;
+        for (int i = 1; i < n; i++) {
+            if(DataPool.tasks[i].getIndex() == 78){
+                System.out.println("---------------");
+            }
+            double earliest_time = Double.MAX_VALUE;//找到最小的starttime
+            int instance_index = 0;//记录将要安排给的instance
+            Task task = DataPool.tasks[order[i]];
+            //试探性地在每个机子上面进行时间计算
+            for (int instance = 0; instance < n; instance++) {
+                double start_time = available_time[instance];//对应这台instance的开始时间
+                for (int pre : task.getPredecessor()) {
+
+                    double transmission_time = DataPool.tasks[pre].getOutputSize() / best_type.bw;
+
+                    if (task2ins[pre] == instance) {
+                        start_time = Math.max(available_time[instance], start_time);
+                    } else {
+                        start_time = Math.max(start_time, transmission_time + available_time[task2ins[pre]]);
+                    }
+                }
+                if (start_time < earliest_time) {
+                    earliest_time = start_time;
+                    instance_index = instance;
+                }
+            }
+            available_time[instance_index] = earliest_time + task.getReferTime() / best_type.cu;
+            task2ins[i] = instance_index;
+        }
+        return null;
+    }
+
+    public static void calculate_rank(int task_index, Type best_type) {
+        if (DataPool.tasks[task_index].getSuccessor().size() == 0) {
+            upward_rank[task_index] = DataPool.tasks[task_index].getReferTime() / best_type.cu;
+        } else {
+            for (int suc_index : DataPool.tasks[task_index].getSuccessor()) {
+                calculate_rank(suc_index, best_type);
+                upward_rank[task_index] = Math.max(upward_rank[task_index],
+                        upward_rank[suc_index] + DataPool.tasks[task_index].getOutputSize() / best_type.bw);
+            }
+        }
     }
 }
